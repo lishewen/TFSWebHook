@@ -5,6 +5,7 @@ using Senparc.Weixin.QY.AdvancedAPIs;
 using Senparc.Weixin.QY.Containers;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -13,12 +14,10 @@ namespace TFSWebHook.Webhooks
 {
 	public class VstsWebHookHandler : VstsWebHookHandlerBase
 	{
-		protected string Token = "lishewen";//对应微信后台设置的Token，建议设置地复杂一些
-		protected string EncodingAESKey = "78FUjPzmKb9CWo3bTQfvPzWVWqYXbbNSqXgGDKzkzI7";
-		public const string CorpId = "wx6c74c79d9de0e186";
-		protected string Secret = "OUxcQTjKijn79qsELxXxOaG1sR-ZvLKkXHR0nE4mA-ijAIMkkkviO_eXk9F61vTi";
+		protected string CorpId = ConfigurationManager.AppSettings["CorpId"]; 
+		protected string Secret = ConfigurationManager.AppSettings["Secret"];
 		public static string AccessToken;
-		public static string AgentId = "10";
+		public static string AgentId = ConfigurationManager.AppSettings["AgentId"];
 		public VstsWebHookHandler() : base()
 		{
 			AccessToken = AccessTokenContainer.TryGetToken(CorpId, Secret);
@@ -65,7 +64,7 @@ namespace TFSWebHook.Webhooks
 		/// </summary>
 		public override Task ExecuteAsync(WebHookHandlerContext context, CodeCheckedInPayload payload)
 		{
-			MassApi.SendText(AccessToken, "@all", "", "", AgentId, $"{payload.Resource.CheckedInBy.DisplayName} 签入代码：{payload.Message.Text} At {payload.CreatedDate.ToString()}。\r\n DetailMessage：{payload.DetailedMessage.Text}");
+			MassApi.SendText(AccessToken, "@all", "", "", AgentId, $"{payload.Message.Text} At {payload.CreatedDate.ToString()}。\r\n DetailMessage：{payload.DetailedMessage.Text}");
 			return Task.FromResult(true);
 		}
 
@@ -98,7 +97,7 @@ namespace TFSWebHook.Webhooks
 
 		public override Task ExecuteAsync(WebHookHandlerContext context, GitPushPayload payload)
 		{
-			MassApi.SendText(AccessToken, "@all", "", "", AgentId, $"{payload.Resource.PushedBy.DisplayName} 签入代码：{payload.Message.Text} At {payload.CreatedDate.ToString()}。\r\n DetailMessage：{payload.DetailedMessage.Text}");
+			MassApi.SendText(AccessToken, "@all", "", "", AgentId, $"{payload.Message.Text} At {payload.CreatedDate.ToString()}。\r\n DetailMessage：{payload.DetailedMessage.Text}");
 			return Task.FromResult(true);
 		}
 
