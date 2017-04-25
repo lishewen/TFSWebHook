@@ -64,7 +64,14 @@ namespace TFSWebHook.Webhooks
 		/// </summary>
 		public override Task ExecuteAsync(WebHookHandlerContext context, CodeCheckedInPayload payload)
 		{
-			MassApi.SendText(AccessToken, "@all", "", "", AgentId, $"{payload.Message.Text} At {payload.CreatedDate.ToString()}。\r\n DetailMessage：{payload.DetailedMessage.Text}");
+			try
+			{
+				MassApi.SendText(AccessToken, "@all", "", "", AgentId, $"{payload.Message.Text} At {payload.CreatedDate.ToString()}。\r\n DetailMessage：{payload.DetailedMessage.Text}");
+			}
+			catch
+			{
+				MassApi.SendText(AccessToken, "@all", "", "", AgentId, $"{payload.Message.Text} At {payload.CreatedDate.ToString()}。\r\n DetailMessage：内容太多已省略！");
+			}
 			return Task.FromResult(true);
 		}
 
@@ -97,7 +104,14 @@ namespace TFSWebHook.Webhooks
 
 		public override Task ExecuteAsync(WebHookHandlerContext context, GitPushPayload payload)
 		{
-			MassApi.SendText(AccessToken, "@all", "", "", AgentId, $"{payload.Message.Text} At {payload.CreatedDate.ToString()}。\r\n DetailMessage：{payload.DetailedMessage.Text}");
+			try
+			{
+				MassApi.SendText(AccessToken, "@all", "", "", AgentId, $"{payload.Message.Text} At {payload.CreatedDate.ToString()}。\r\n DetailMessage：{payload.DetailedMessage.Text}");
+			}
+			catch
+			{
+				MassApi.SendText(AccessToken, "@all", "", "", AgentId, $"{payload.Message.Text} At {payload.CreatedDate.ToString()}。\r\n DetailMessage：内容太多已省略！");
+			}
 			return Task.FromResult(true);
 		}
 
